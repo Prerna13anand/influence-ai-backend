@@ -37,6 +37,7 @@ security = HTTPBearer()
 # CORS middleware configuration to allow frontend communication
 origins = [
     "http://localhost:3000",
+    "https://influenceai-frontend.vercel.app"
 ]
 
 app.add_middleware(
