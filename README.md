@@ -55,3 +55,9 @@ LINKEDIN_CLIENT_SECRET="your_linkedin_client_secret_here"
 uvicorn main:app --reload
 ```
 The API will be available at `http://127.0.0.1:8000`.
+
+## Live Demo
+
+This project is deployed and live.
+* **Frontend:** [https://influence-ai-frontend.vercel.app/](https://influence-ai-frontend.vercel.app/)
+* **Backend API:** [https://influence-ai-backend.onrender.com/docs](https://influence-ai-backend.onrender.com/docs)
