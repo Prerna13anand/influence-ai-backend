@@ -173,7 +173,8 @@ async def share_post_on_linkedin(
     share_url = "https://api.linkedin.com/v2/posts"
     share_payload = {
         "author": f"urn:li:person:{user_urn}",
-        "commentary": request.post_text,
+        # LINE: Explicitly handle the newlines
+        "commentary": request.post_text.replace('\\n', '\n'), 
         "visibility": "PUBLIC",
         "distribution": {
             "feedDistribution": "MAIN_FEED",
