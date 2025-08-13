@@ -15,6 +15,8 @@ import models
 import schemas
 import crud
 from database import SessionLocal, engine
+from config import settings # ADD THIS LINE
+
 
 # AI-related imports
 from langchain_google_genai import ChatGoogleGenerativeAI
@@ -37,7 +39,8 @@ security = HTTPBearer()
 # CORS middleware configuration to allow frontend communication
 origins = [
     "http://localhost:3000",
-    "https://influenceai-frontend.vercel.app"
+    "https://influence-ai-frontend.vercel.app"  
+
 ]
 
 app.add_middleware(
@@ -118,7 +121,9 @@ async def login_via_linkedin():
         f"https://www.linkedin.com/oauth/v2/authorization"
         f"?response_type=code"
         f"&client_id={os.getenv('LINKEDIN_CLIENT_ID')}"
-        f"&redirect_uri=http://127.0.0.1:8000/auth/linkedin/callback"
+        # f"&redirect_uri=http://127.0.0.1:8000/auth/linkedin/callback"
+        f"&redirect_uri={settings.BACKEND_URL}/auth/linkedin/callback" # MODIFIED LINE
+
         f"&scope={scope}"
     )
     return RedirectResponse(url=linkedin_auth_url)
@@ -198,7 +203,8 @@ async def linkedin_callback(code: str):
     """
     client_id = os.getenv("LINKEDIN_CLIENT_ID")
     client_secret = os.getenv("LINKEDIN_CLIENT_SECRET")
-    redirect_uri = "http://127.0.0.1:8000/auth/linkedin/callback"
+    # redirect_uri = "http://127.0.0.1:8000/auth/linkedin/callback"
+    redirect_uri = f"{settings.BACKEND_URL}/auth/linkedin/callback" # MODIFIED LINE
 
     token_url = "https://www.linkedin.com/oauth/v2/accessToken"
     payload = {
@@ -216,11 +222,12 @@ async def linkedin_callback(code: str):
         token_data = response.json()
         access_token = token_data["access_token"]
         # NEW: Redirect to the frontend with the token in the URL
-        frontend_url = f"http://localhost:3000?token={access_token}"
+        frontend_url = f"{settings.FRONTEND_URL}?token={access_token}" # MODIFIED LINE
+
         return RedirectResponse(url=frontend_url)
     else:
         # If it fails, redirect to the frontend with an error message
-        return RedirectResponse(url="http://localhost:3000?error=auth_failed")
+        return RedirectResponse(url=f"{settings.FRONTEND_URL}?error=auth_failed") # MODIFIED LINE
 
 
 
